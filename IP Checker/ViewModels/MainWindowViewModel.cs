@@ -5,13 +5,9 @@ using MapControl;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
-using System.Windows.Shapes;
-using static System.Net.WebRequestMethods;
 
 namespace IP_Checker.ViewModels
 {
@@ -27,6 +23,17 @@ namespace IP_Checker.ViewModels
         {
             get { return _title; }
             set { Set(ref _title, value); }
+        }
+        public string SortedData
+        {
+            get { return _sortedData; }
+            set { Set(ref _sortedData, value); }
+        }
+
+        public Location Location
+        {
+            get { return _location; }
+            set { Set(ref _location, value); }
         }
 
         public string IpAddress
@@ -53,17 +60,6 @@ namespace IP_Checker.ViewModels
             }
         }
 
-        public string SortedData
-        {
-            get { return _sortedData; }
-            set { Set(ref _sortedData, value); }
-        }
-
-        public Location Location
-        {
-            get { return _location; }
-            set { Set(ref _location, value); }
-        }
 
         public MainWindowViewModel()
         {

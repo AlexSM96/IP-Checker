@@ -6,7 +6,6 @@
         xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes"
         xmlns:vm="clr-namespace:IP_Checker.ViewModels"
         xmlns:map="clr-namespace:MapControl;assembly=MapControl.WPF"
-        xmlns:ipchecker="clr-namespace:IP_Checker.Model"
         xmlns:local="clr-namespace:IP_Checker"
         mc:Ignorable="d"
         Title="{Binding Title}" Height="700" Width="1000" WindowStartupLocation="CenterScreen"
@@ -27,7 +26,7 @@
                     <TextBox Name="textBox" Text="{Binding IpAddress}"/>
                     <Label Content="IP Info" Margin="0,20,0,0" FontWeight="Bold"/>
                     <TextBlock Height="450" Background="White" 
-                               Text="{Binding SortedData}" TextWrapping="Wrap">
+                               Text="{Binding SortedData}" >
                     </TextBlock>
                     <Button Content="CHECK" FontWeight="Bold" 
                             FontFamily="Comic Sans Ms" Margin="0,20,0,0" 
