@@ -2,10 +2,15 @@
 using IP_Checker.Model;
 using IP_Checker.ViewModels.Base;
 using MapControl;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Runtime;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
+using System.Windows.Shapes;
 using static System.Net.WebRequestMethods;
 
 namespace IP_Checker.ViewModels
@@ -13,8 +18,8 @@ namespace IP_Checker.ViewModels
     internal class MainWindowViewModel : ViewModel
     {
         private string _title = "IP Checker";
-        private string _ipAddress = "";
-        private string _sortedData = "";
+        private string _ipAddress = string.Empty;
+        private string _sortedData = string.Empty;
         private Location _location;
         private IpChecker _ipChecker;
         public ICommand OnCheckButtonClick { get; }
@@ -27,13 +32,13 @@ namespace IP_Checker.ViewModels
         public string IpAddress
         {
             get { return _ipAddress; }
-            set 
+            set
             {
                 if (Regex.IsMatch(value, "[0-9]"))
                 {
-                    if (value.Contains(','))
+                    if (Regex.IsMatch(value, @"\D+"))
                     {
-                        value = value.Replace(',', '.');
+                        value = new Regex(@"\D+").Replace(value, ".");
                     }
                 }
                 else
@@ -65,17 +70,32 @@ namespace IP_Checker.ViewModels
             OnCheckButtonClick = new RelayCommand
                 (OnCheckButtonClickExecuted, CanCheckButtonClickExecute);
             _ipChecker = new();
-            _location = new Location(IpChecker.Latitude, IpChecker.Longitude);
+            _location = new Location();
         }
 
         public bool CanCheckButtonClickExecute(object parameter) => true;
         public void OnCheckButtonClickExecuted(object parameter)
         {
-            
             _ipChecker = new(IpAddress);
+            var ipInfo = _ipChecker.GetData();
+            _location = new Location(GetOnMapLocation(ipInfo).Item1, GetOnMapLocation(ipInfo).Item2);
+            SortedData = string.Empty;
+            foreach (var item in ipInfo)
+            {
+                SortedData += item + "\r\n";
+            }
+        }
 
-            _location = new Location(IpChecker.Latitude, IpChecker.Longitude);
-            SortedData = IpChecker.SortedData;
+        private Tuple<double, double> GetOnMapLocation(List<string> ipInfo)
+        {
+            var locations = ipInfo
+                .Where(x => x.Contains("latitude", StringComparison.OrdinalIgnoreCase)
+                       || x.Contains("longitude", StringComparison.OrdinalIgnoreCase))
+                .Select(x => x.Substring(11))
+                .ToList();
+            double latitude = double.Parse(locations[0].Replace('.', ','));
+            double longitude = double.Parse(locations[1].Remove(0, 1).Replace('.', ','));
+            return Tuple.Create(latitude, longitude);
         }
     }
 
