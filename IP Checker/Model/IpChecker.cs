@@ -11,7 +11,14 @@ namespace IP_Checker.Model
         public static double Longitude { get; private set; }
         public static double Latitude { get; private set; }
 
-        public async void GetData()
+        public IpChecker(string ip = "")
+        {
+            IpAddress = ip;
+            GetData();
+        }
+
+
+        private async void GetData()
         {
             using var client = new WebClient();
 
@@ -21,7 +28,7 @@ namespace IP_Checker.Model
             .Replace('}', ' ')
             .Replace('"', ' ')
             .Replace("_", " ")
-            .Replace("/", " ")
+            .Replace("/", "")
             .Replace(@"\", "")
             .Trim()
             .Split(',')

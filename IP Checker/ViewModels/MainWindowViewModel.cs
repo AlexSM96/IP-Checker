@@ -16,7 +16,7 @@ namespace IP_Checker.ViewModels
         private string _ipAddress = "";
         private string _sortedData = "";
         private Location _location;
-        public IpChecker IpChecker { get; }
+        private IpChecker _ipChecker;
         public ICommand OnCheckButtonClick { get; }
         public string Title
         {
@@ -27,7 +27,25 @@ namespace IP_Checker.ViewModels
         public string IpAddress
         {
             get { return _ipAddress; }
-            set { Set(ref _ipAddress, value); }
+            set 
+            {
+                if (Regex.IsMatch(value, "[0-9]"))
+                {
+                    if (value.Contains(','))
+                    {
+                        value = value.Replace(',', '.');
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("Typically, an address is written as four decimal numbers " +
+                        "between 0 and 255 (equivalent to four eight-bit numbers) " +
+                        "separated by dots, such as 192.168.0.3");
+                    value = "";
+                }
+                _ipAddress = value;
+                OnPropertyChanged(IpAddress);
+            }
         }
 
         public string SortedData
@@ -46,17 +64,17 @@ namespace IP_Checker.ViewModels
         {
             OnCheckButtonClick = new RelayCommand
                 (OnCheckButtonClickExecuted, CanCheckButtonClickExecute);
-            IpChecker = new IpChecker();
-            IpChecker.GetData();
+            _ipChecker = new();
             _location = new Location(IpChecker.Latitude, IpChecker.Longitude);
         }
 
         public bool CanCheckButtonClickExecute(object parameter) => true;
         public void OnCheckButtonClickExecuted(object parameter)
         {
-            IpChecker.IpAddress = IpAddress;
-            IpChecker.GetData();
-            Location = new Location(IpChecker.Latitude, IpChecker.Longitude);
+            
+            _ipChecker = new(IpAddress);
+
+            _location = new Location(IpChecker.Latitude, IpChecker.Longitude);
             SortedData = IpChecker.SortedData;
         }
     }

@@ -9,7 +9,7 @@
         xmlns:ipchecker="clr-namespace:IP_Checker.Model"
         xmlns:local="clr-namespace:IP_Checker"
         mc:Ignorable="d"
-        Title="{Binding Title}" Height="700" Width="1000" 
+        Title="{Binding Title}" Height="700" Width="1000" WindowStartupLocation="CenterScreen"
         FontFamily="Comic Sans Ms">
     <Window.DataContext>
         <vm:MainWindowViewModel/>
@@ -23,15 +23,16 @@
             <GridSplitter Grid.Column="1" Width="5" HorizontalAlignment="Left" Grid.RowSpan="2"/>
             <DockPanel Grid.Column="0">
                 <StackPanel Margin="10">
-                    <Label Content="Enter IP address"/>
+                    <Label Content="Enter IP address" FontWeight="Bold"/>
                     <TextBox Name="textBox" Text="{Binding IpAddress}"/>
-                    <Label Content="IP Info" Margin="0,20,0,0"/>
+                    <Label Content="IP Info" Margin="0,20,0,0" FontWeight="Bold"/>
                     <TextBlock Height="450" Background="White" 
                                Text="{Binding SortedData}" TextWrapping="Wrap">
                     </TextBlock>
                     <Button Content="CHECK" FontWeight="Bold" 
                             FontFamily="Comic Sans Ms" Margin="0,20,0,0" 
-                            Command="{Binding OnCheckButtonClick}" RenderTransformOrigin="0.5,2.621"/>
+                            Command="{Binding OnCheckButtonClick}" 
+                            RenderTransformOrigin="0.5,2.621"/>
                 </StackPanel>
             </DockPanel>
             <map:Map Grid.Column="1" ZoomLevel="10" MaxZoomLevel="21" 
