@@ -2,11 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Text.RegularExpressions;
 
 namespace IP_Checker.Model
 {
     internal class IpChecker
     {
+      
         public string IpAddress { get; set; }
 
         public IpChecker(string ip = "")
@@ -18,23 +20,18 @@ namespace IP_Checker.Model
         {
             using var client = new WebClient();
 
-            var line = client.DownloadString($"http://ipwho.is/{IpAddress}")
-                .ToUpper()
-                .Replace('{', ' ')
-                .Replace('}', ' ')
-                .Replace('"', ' ')
-                .Replace("_", " ")
-                .Replace("/", " ")
-                .Replace(@"\", " ")
-                .Trim()
-                .Split(',')
-                .Skip(1)
-                .ToArray()
-                .Where(x => x.Length > 5 && !x.Contains("FLAG") && !x.Contains("EMOJI")
-                       && !x.Contains("IS") && !x.Contains("ORG"))
-                .ToList();
+            var downloadString = client.DownloadString($"http://ipwho.is/{IpAddress}");
+            var parsingLine = string.Empty;
+            Regex.Matches(downloadString, @"[\w\,\-\:\,\.]+")
+                .Select(x => x.ToString().ToUpper())
+                .ToList()
+                .ForEach(x => parsingLine += x);
 
-            return line;
+            var listLine = parsingLine.Split(",")
+                .Where(x => !x.Contains("BORDER") && !x.Contains("FLAG")
+                      && !x.Contains("EMOJI") && x.Length > 5)
+                .ToList();
+            return listLine;
         }
     }
 }

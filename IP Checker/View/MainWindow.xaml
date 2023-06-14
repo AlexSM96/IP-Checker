@@ -16,7 +16,7 @@
     <DockPanel Background="FloralWhite">
         <Grid>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition MinWidth="250" MaxWidth="240"/>
+                <ColumnDefinition MinWidth="250" MaxWidth="290"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
             <GridSplitter Grid.Column="1" Width="5" HorizontalAlignment="Left" Grid.RowSpan="2"/>
@@ -26,7 +26,7 @@
                     <TextBox Name="textBox" Text="{Binding IpAddress}"/>
                     <Label Content="IP Info" Margin="0,20,0,0" FontWeight="Bold"/>
                     <TextBlock Height="450" Background="White" 
-                               Text="{Binding SortedData}" >
+                               Text="{Binding SortedData}" Selector.IsSelected="False">
                     </TextBlock>
                     <Button Content="CHECK" FontWeight="Bold" 
                             FontFamily="Comic Sans Ms" Margin="0,20,0,0" 
@@ -43,6 +43,5 @@
                 <map:MapGraticule Background="Transparent" Opacity="0.2"/>
             </map:Map>
         </Grid>
-
     </DockPanel>
 </Window>

@@ -41,7 +41,7 @@ namespace IP_Checker.ViewModels
             get { return _ipAddress; }
             set
             {
-                if (Regex.IsMatch(value, "[0-9]"))
+                if (Regex.IsMatch(value, @"^[0-9]+\.[0-9]+\.[0-9]+(\.[0-9]+)$"))
                 {
                     if (Regex.IsMatch(value, @"\D+"))
                     {
@@ -52,7 +52,7 @@ namespace IP_Checker.ViewModels
                 {
                     MessageBox.Show("Typically, an address is written as four decimal numbers " +
                         "between 0 and 255 (equivalent to four eight-bit numbers) " +
-                        "separated by dots, such as 192.168.0.3");
+                        "separated by DOTS, such as 192.168.0.3");
                     value = "";
                 }
                 _ipAddress = value;
@@ -87,7 +87,7 @@ namespace IP_Checker.ViewModels
             var locations = ipInfo
                 .Where(x => x.Contains("latitude", StringComparison.OrdinalIgnoreCase)
                        || x.Contains("longitude", StringComparison.OrdinalIgnoreCase))
-                .Select(x => x.Substring(11))
+                .Select(x => x.Substring(9))
                 .ToList();
             double latitude = double.Parse(locations[0].Replace('.', ','));
             double longitude = double.Parse(locations[1].Remove(0, 1).Replace('.', ','));
